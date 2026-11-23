@@ -75,3 +75,12 @@ html:has(#r5-dialog-host dialog[open]){scrollbar-gutter:stable}
 #rpm-reference-home .rpm-modal-content .rpm-history>.rpm-text-btn{white-space:nowrap}
 #rpm-reference-home .rpm-modal-content .rpm-history:last-of-type{margin-bottom:16px}
 @media(max-width:600px){#rpm-reference-home dialog.r5-dialog-shade{padding:16px}#rpm-reference-home dialog.r5-dialog-shade .r5-dialog,#rpm-reference-home dialog.r5-dialog-shade .r5-dialog.narrow{width:100%;max-width:100%;border-radius:18px}#rpm-reference-home dialog.r5-dialog-shade .r5-dialog>header{padding:20px;gap:14px}#rpm-reference-home dialog.r5-dialog-shade .r5-dialog h2{font-size:23px}#rpm-reference-home .rpm-modal-content{padding:20px}#rpm-reference-home .rpm-modal-content .rpm-history{grid-template-columns:minmax(0,1fr) auto;gap:8px 14px}#rpm-reference-home .rpm-modal-content .rpm-history>b,#rpm-reference-home .rpm-modal-content .rpm-history>span{grid-column:1/-1}#rpm-reference-home .rpm-modal-content .rpm-history>.rpm-text-btn{justify-self:start}}
+
+/* Real image elements replace tiny screenshot crops; card media is edge to edge. */
+#rpm-reference-home .rpm-image{position:relative;overflow:hidden;background-image:none!important}
+#rpm-reference-home .rpm-image>img{display:block;position:absolute;inset:0;width:100%;height:100%;padding:0;object-fit:cover;object-position:var(--photo-position,50% 50%)}
+#rpm-reference-home :is(.r6-product-photo,.r6-article-photo,.r6-story-photo)>.rpm-image{width:100%;max-width:none;height:100%;aspect-ratio:auto!important;flex:1}
+#rpm-reference-home .r6-hero-visual>.rpm-image{inset:0;width:100%;height:100%;aspect-ratio:auto!important}
+#rpm-reference-home .rpm-catalog-open .rpm-image>img{padding:0;object-fit:cover}
+#rpm-reference-home .r5-detail-dialog-photo.rpm-image{aspect-ratio:1!important;background:#f6f6f7}
+#rpm-reference-home :is(.r5-detail-dialog-photo,.r5-quote-line .r5-photo)>img{object-fit:contain;object-position:center}
