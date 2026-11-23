@@ -112,7 +112,7 @@ let dialogPageOverflow=null;
 function closeDialog(){const host=root.querySelector('#r5-dialog-host'),layer=host.querySelector('dialog');if(layer?.open)layer.close();host.replaceChildren();if(dialogPageOverflow!==null){document.documentElement.style.overflow=dialogPageOverflow;dialogPageOverflow=null;}if(dialogFocus?.isConnected)dialogFocus.focus({preventScroll:true});dialogFocus=null;}
 function dialog(title,body,subtitle='',narrow=false,options={}){
 const host=root.querySelector('#r5-dialog-host'),existing=host.querySelector('dialog[open]');
-if(options.drawer&&existing?.classList.contains('rpm-drawer-layer')){
+if(options.drawer&&!options.product&&existing?.classList.contains('rpm-drawer-layer')&&!existing.classList.contains('rpm-product-layer')){
 const content=existing.querySelector('.rpm-modal-content'),scroll=content.scrollTop,active=document.activeElement;
 const focusKey=active?.hasAttribute('data-quote-qty')?`[data-quote-qty="${active.dataset.quoteQty}"]`:active?.hasAttribute('data-quantity-step')?`[data-quantity-step="${active.dataset.quantityStep}"][data-item="${active.dataset.item}"]`:active?.hasAttribute('data-rpm-branch')?'[data-rpm-branch]':null;
 content.innerHTML=body;content.scrollTop=scroll;existing.querySelector('.rpm-drawer-footer')?.remove();
@@ -122,7 +122,7 @@ if(focusKey)(existing.querySelector(focusKey)||existing.querySelector('.r5-close
 }
 if(!existing)dialogFocus=document.activeElement;
 if(existing?.open)existing.close();closeBranch();
-host.innerHTML=`<dialog class="r5-dialog-shade ${options.drawer?'rpm-drawer-layer':''}" aria-labelledby="r5-dialog-title"><section class="r5-dialog ${narrow?'narrow':''} ${options.drawer?'rpm-quote-drawer':''}" tabindex="-1" aria-labelledby="r5-dialog-title"><header><div>${options.drawer?'<span class="rpm-drawer-eyebrow">TU PRÓXIMA COMPRA</span>':''}<h2 id="r5-dialog-title">${title}</h2>${subtitle||options.drawer?`<p>${subtitle}</p>`:''}</div><button class="r5-close" data-action="close" aria-label="Cerrar">${icon('x')}</button></header><div class="rpm-modal-content">${body}</div>${options.footer?`<footer class="rpm-drawer-footer">${options.footer}</footer>`:''}</section></dialog>`;
+host.innerHTML=`<dialog class="r5-dialog-shade ${options.drawer?'rpm-drawer-layer':''} ${options.product?'rpm-product-layer':''}" aria-labelledby="r5-dialog-title"><section class="r5-dialog ${narrow?'narrow':''} ${options.drawer?'rpm-quote-drawer':''} ${options.product?'rpm-product-drawer':''}" tabindex="-1" aria-labelledby="r5-dialog-title"><header><div>${options.drawer?`<span class="rpm-drawer-eyebrow">${options.product?esc(options.category):'TU PRÓXIMA COMPRA'}</span>`:''}<h2 id="r5-dialog-title">${title}</h2>${subtitle||options.drawer?`<p>${subtitle}</p>`:''}</div><button class="r5-close" data-action="close" aria-label="Cerrar">${icon('x')}</button></header><div class="rpm-modal-content">${body}</div>${options.footer?`<footer class="rpm-drawer-footer">${options.footer}</footer>`:''}</section></dialog>`;
 const layer=host.querySelector('dialog');layer.addEventListener('cancel',e=>{e.preventDefault();closeDialog()});
 if(dialogPageOverflow===null){dialogPageOverflow=document.documentElement.style.overflow;document.documentElement.style.overflow='hidden';}
 icons();layer.showModal();host.querySelector('.r5-dialog').focus({preventScroll:true});
