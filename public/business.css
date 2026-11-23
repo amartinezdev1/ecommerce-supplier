@@ -84,3 +84,52 @@ html:has(#r5-dialog-host dialog[open]){scrollbar-gutter:stable}
 #rpm-reference-home .rpm-catalog-open .rpm-image>img{padding:0;object-fit:cover}
 #rpm-reference-home .r5-detail-dialog-photo.rpm-image{aspect-ratio:1!important;background:#f6f6f7}
 #rpm-reference-home :is(.r5-detail-dialog-photo,.r5-quote-line .r5-photo)>img{object-fit:contain;object-position:center}
+
+/* Quote drawer: the native top layer keeps the backdrop edge to edge. */
+#rpm-reference-home dialog.rpm-drawer-layer[open]{justify-content:flex-end;align-items:stretch;padding:0}
+#rpm-reference-home dialog.rpm-drawer-layer::backdrop{background:rgb(20 19 29 / 28%);animation:rpm-backdrop-in .22s ease-out}
+#rpm-reference-home dialog.rpm-drawer-layer .rpm-quote-drawer{width:min(100%,500px);max-width:500px;height:100%;max-height:100%;border:0;border-radius:24px 0 0 24px;box-shadow:-12px 0 60px #14131d20;animation:rpm-drawer-in .25s cubic-bezier(.2,.7,.2,1)}
+#rpm-reference-home .rpm-quote-drawer>header{padding:26px 26px 20px!important;align-items:center!important}
+#rpm-reference-home .rpm-drawer-eyebrow{display:block;font-size:11px;letter-spacing:1.6px;font-weight:600;color:#696775;margin-bottom:8px}
+#rpm-reference-home dialog.rpm-drawer-layer h2{font-size:26px}
+#rpm-reference-home .rpm-quote-drawer>header p{font-size:13px!important}
+#rpm-reference-home .rpm-quote-drawer .rpm-modal-content{flex:1;padding:20px 26px;scrollbar-gutter:auto}
+#rpm-reference-home .rpm-drawer-demo{font-size:12px;line-height:1.5;color:#696775;margin:12px 0}
+#rpm-reference-home .rpm-quote-drawer .r5-quote-line{grid-template-columns:64px minmax(0,1fr) auto;gap:14px;align-items:start;padding:22px 0}
+#rpm-reference-home .rpm-quote-drawer .r5-quote-line .r5-photo{width:64px;height:76px;min-width:0;max-width:none;border-radius:10px;background:#f6f6f7}
+#rpm-reference-home .rpm-quote-drawer .r5-quote-line h3{font-size:15px;line-height:1.4;margin:0;font-weight:600}
+#rpm-reference-home .rpm-quote-drawer .r5-quote-line p{font-size:12px;line-height:1.5;margin:5px 0 0;color:#777582}
+#rpm-reference-home .rpm-quote-drawer .r5-quote-line>strong{font-size:15px;line-height:1.4;white-space:nowrap;padding-top:1px}
+#rpm-reference-home .rpm-quote-item-copy{min-width:0}
+#rpm-reference-home .rpm-quote-item-controls{display:flex;gap:12px;align-items:center;margin-top:12px}
+#rpm-reference-home .rpm-quote-drawer .r5-quantity{border:1px solid #e4e3e8;border-radius:999px;padding:0 5px;gap:0;margin:0}
+#rpm-reference-home .rpm-quote-drawer .r5-quantity button{width:30px;height:34px;min-height:34px;font-size:18px}
+#rpm-reference-home .rpm-quote-drawer .r5-quantity input{width:44px;min-height:32px;padding:0;font-size:14px;border:0;border-radius:0;background:transparent}
+#rpm-reference-home .rpm-quote-remove{display:grid;place-items:center;width:32px;height:34px;color:#777582;border-radius:50%}
+#rpm-reference-home .rpm-quote-remove:hover{background:#f6f6f7;color:#a52525}
+#rpm-reference-home .rpm-quote-remove svg{width:17px;height:17px}
+#rpm-reference-home .rpm-drawer-footer{flex:none;padding:18px 26px 20px;border-top:1px solid #ededf0;background:#fff;max-height:55%;overflow:auto;overscroll-behavior:contain}
+#rpm-reference-home .rpm-drawer-footer .rpm-totals{border:0;padding:0;gap:7px}
+#rpm-reference-home .rpm-drawer-footer .rpm-totals p{font-size:13px;color:#696775;line-height:1.4}
+#rpm-reference-home .rpm-drawer-footer .rpm-totals b{font-weight:500;color:#111}
+#rpm-reference-home .rpm-drawer-footer .rpm-totals .rpm-grand-total{font-size:21px;color:#111;align-items:baseline;margin-top:8px}
+#rpm-reference-home .rpm-drawer-footer .rpm-grand-total b{font-weight:700;font-size:26px;letter-spacing:-.6px}
+#rpm-reference-home .rpm-quote-confirmation{font-size:12px;line-height:1.5;color:#777582;margin:10px 0 16px}
+#rpm-reference-home .rpm-drawer-actions{display:grid;gap:7px}
+#rpm-reference-home .rpm-drawer-actions .r5-whatsapp{justify-content:center;min-height:48px;border-radius:999px;font-size:13px;line-height:1.4;padding:12px 16px;background:var(--rpm-lime);color:#111;white-space:normal}
+#rpm-reference-home .rpm-quote-pdf{display:flex;align-items:center;justify-content:center;gap:8px;min-height:38px;font-size:13px;color:#56556a}
+#rpm-reference-home .rpm-quote-pdf svg{width:16px;height:16px}
+#rpm-reference-home #rpm-quote-result:empty{display:none}
+#rpm-reference-home #rpm-quote-result:not(:empty){padding-top:16px;margin-top:12px;border-top:1px solid #ededf0;font-size:13px}
+#rpm-reference-home #rpm-quote-result .rpm-btn{width:100%;margin:10px 0;font-size:13px}
+#rpm-reference-home #rpm-quote-result .rpm-muted{font-size:12px}
+#rpm-reference-home .rpm-drawer-empty{display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center;min-height:320px;padding:30px 8px;gap:16px}
+#rpm-reference-home .rpm-drawer-empty>span{display:grid;place-items:center;width:76px;height:76px;background:#f1f7df;border-radius:50%;color:#40520f}
+#rpm-reference-home .rpm-drawer-empty svg{width:32px;height:32px}
+#rpm-reference-home .rpm-drawer-empty h3{font-size:20px;line-height:1.4;font-weight:600}
+#rpm-reference-home .rpm-drawer-empty p{font-size:14px;line-height:1.6;color:#777582;max-width:310px}
+#rpm-reference-home .rpm-drawer-loading{font-size:14px;color:#777582;padding:24px 0}
+@keyframes rpm-drawer-in{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes rpm-backdrop-in{from{opacity:0}to{opacity:1}}
+@media(max-width:600px){#rpm-reference-home dialog.rpm-drawer-layer .rpm-quote-drawer{width:100%;max-width:none;border-radius:0}#rpm-reference-home .rpm-quote-drawer>header{padding:20px!important}#rpm-reference-home .rpm-quote-drawer .rpm-modal-content{padding:16px 20px}#rpm-reference-home .rpm-drawer-footer{padding:16px 20px max(16px,env(safe-area-inset-bottom));max-height:55%}#rpm-reference-home .rpm-quote-drawer .r5-quote-line{gap:10px;grid-template-columns:56px minmax(0,1fr) auto}#rpm-reference-home .rpm-quote-drawer .r5-quote-line .r5-photo{width:56px;height:68px}#rpm-reference-home .rpm-quote-drawer .r5-quote-line h3{font-size:14px}#rpm-reference-home .rpm-quote-drawer .r5-quote-line>strong{font-size:14px}}
+@media(prefers-reduced-motion:reduce){#rpm-reference-home dialog.rpm-drawer-layer::backdrop,#rpm-reference-home dialog.rpm-drawer-layer .rpm-quote-drawer{animation:none}}
