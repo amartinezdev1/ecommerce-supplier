@@ -43,3 +43,9 @@ yarn-error.log*
 
 # OS metadata
 .DS_Store
+
+# Deployment settings and local data
+!.env.example
+.vercel/
+.data/
+backups/

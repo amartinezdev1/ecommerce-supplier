@@ -6,7 +6,7 @@ let js=await readFile('public/prototype.js','utf8');
 js=js.replace('(()=>{','(async()=>{').replace("const branches=['Av. Obaldía','Calle 4ta','Puerto Armuelles'];","let branches=['Av. Obaldía','Calle 4ta','Puerto Armuelles'];");
 js=js.replace('const products=[','let products=[').replace('cart:{1:1,2:1}','cart:{}');
 js=js.replace("products.forEach(p=>{const q=Number(s.cart[p.id]);if(Number.isInteger(q)&&q>0&&q<=999)state.cart[p.id]=q})","Object.entries(s.cart).forEach(([id,value])=>{const q=Number(value);if(/^\\d+$/.test(id)&&Number.isInteger(q)&&q>0&&q<=999999)state.cart[id]=q})");
-js=js.replace("restore(window.openai?.widgetState?.privateContent);","try{restore(JSON.parse(localStorage.getItem('rpm-draft-v1')))}catch{}\nlet config=null,auth={user:null,role:null},initialized=false,adminData=null,editingProduct=null,lastQuote=null,importBook=null,importRows=null;state.page=0;state.minPrice='';state.maxPrice='';state.stockOnly=false;");
+js=js.replace("// RESTORE_DRAFT","try{restore(JSON.parse(localStorage.getItem('rpm-draft-v1')))}catch{}\nlet config=null,auth={user:null,role:null},initialized=false,adminData=null,editingProduct=null,lastQuote=null,importBook=null,importRows=null;state.page=0;state.minPrice='';state.maxPrice='';state.stockOnly=false;");
 const photoStart=js.indexOf('function photo('),photoEnd=js.indexOf('function logo(',photoStart);
 if(photoStart<0||photoEnd<0)throw new Error('No se encontró el renderizador de imágenes');
 js=js.slice(0,photoStart)+await readFile('lib/photos-client.js','utf8')+'\n'+js.slice(photoEnd);

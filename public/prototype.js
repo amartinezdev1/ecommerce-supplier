@@ -19,7 +19,7 @@ const products=[
 ];
 const state={view:'home',filter:'all',search:'',branch:0,cart:{1:1,2:1},favorites:[],qty:1,selected:1,featuredTab:'destacados',featuredPage:0,quoteIndex:0,blogPage:0};
 function restore(s){if(!s||s.version!==5)return;if(['destacados','novedades','vendidos'].includes(s.featuredTab))state.featuredTab=s.featuredTab;if([0,1,2].includes(s.featuredPage))state.featuredPage=s.featuredPage;if([0,1,2].includes(s.quoteIndex))state.quoteIndex=s.quoteIndex;if([0,1].includes(s.blogPage))state.blogPage=s.blogPage;if([0,1,2].includes(s.branch))state.branch=s.branch;if(s.cart&&typeof s.cart==='object'){state.cart={};products.forEach(p=>{const q=Number(s.cart[p.id]);if(Number.isInteger(q)&&q>0&&q<=999)state.cart[p.id]=q})}if(Array.isArray(s.favorites))state.favorites=s.favorites.filter(id=>products.some(p=>p.id===id))}
-restore(window.openai?.widgetState?.privateContent);
+// RESTORE_DRAFT
 const money=n=>'$'+n.toFixed(2);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const icon=n=>`<i data-lucide="${n}" aria-hidden="true"></i>`;
@@ -28,7 +28,7 @@ function logo(){return `<button class="r5-logo" data-action="home" aria-label="R
 const cartProducts=()=>products.filter(p=>state.cart[p.id]);
 const total=()=>cartProducts().reduce((sum,p)=>sum+p.price*state.cart[p.id],0);
 function icons(){if(globalThis.lucide)globalThis.lucide.createIcons({attrs:{width:16,height:16}})}
-function persist(){if(window.openai?.setWidgetState)window.openai.setWidgetState({modelContent:{diseño:'Portada RPM con ocho secciones según la referencia',vista:state.view,sucursal:branches[state.branch],favoritos:state.favorites,cotizacion:cartProducts().map(p=>({producto:p.name,cantidad:state.cart[p.id]})),datos:'Contenido de muestra; fotografías de la referencia visual'},privateContent:{version:5,branch:state.branch,cart:state.cart,favorites:state.favorites,featuredTab:state.featuredTab,featuredPage:state.featuredPage,quoteIndex:state.quoteIndex,blogPage:state.blogPage}}).catch(()=>{})}
+function persist(){}
 let toastTimer;
 function toast(text){const el=root.querySelector('#r5-toast');el.textContent=text;el.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{el.hidden=true},4000)}
 function card(p,compact=false){const liked=state.favorites.includes(p.id);return `<article class="r5-product ${compact?'compact':''}"><div class="r5-product-photo"><button class="r5-product-open" data-product="${p.id}" aria-label="Ver ${esc(p.name)}">${photo(p.photo,p.name)}</button><button class="r5-heart" data-favorite="${p.id}" aria-label="${liked?'Quitar de':'Agregar a'} favoritos: ${esc(p.name)}" aria-pressed="${liked}">${icon('heart')}</button></div><div class="r5-product-body"><button class="r5-product-title" data-product="${p.id}">${p.name}</button><p class="r5-product-category">${p.cat}</p>${!compact?`<div class="r5-rating" aria-label="Valoración ilustrativa: 4.8 de 5"><span aria-hidden="true">★★★★★</span><span>(${p.reviews||'128'})</span></div>`:''}<div class="r5-product-price"><span>${money(p.price)}</span><del>${money(p.old)}</del></div>${!compact?`<button class="r5-add-cart" data-add="${p.id}" aria-label="Agregar a la cotización: ${esc(p.name)}">${icon('shopping-cart')}</button>`:''}</div></article>`}
@@ -174,7 +174,6 @@ root.querySelector('#r5-search-input').addEventListener('keydown',e=>{if(e.key==
 root.addEventListener('input',e=>{if(e.target.id==='r5-detail-qty'&&e.target.value!=='')state.qty=Math.max(1,Math.min(999,Math.floor(Number(e.target.value)||1)))});
 root.addEventListener('keydown',e=>{if(e.key==='Escape'){closeDialog();closeBranch();setSearchOpen(false);root.querySelectorAll('.r5-primary-nav details[open]').forEach(d=>d.open=false)}if(e.key==='Tab'){const dialogEl=root.querySelector('.r5-dialog');if(!dialogEl)return;const controls=[...dialogEl.querySelectorAll('button,input')].filter(x=>!x.disabled);const first=controls[0],last=controls[controls.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}});
 root.addEventListener('click',e=>{if(e.target.classList.contains('r5-dialog-shade'))closeDialog();if(!e.target.closest('#r5-branch-panel')&&!e.target.closest('#r5-branch-trigger')&&!e.target.closest('[data-action="branches"]'))closeBranch()});
-window.addEventListener('openai:set_globals',e=>{const s=e.detail?.globals?.widgetState?.privateContent;if(s?.version===5){restore(s);renderMain()}});
 root.querySelector('#r5-footer').innerHTML=footer();renderMain();
 
 })();

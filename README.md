@@ -1,27 +1,46 @@
-# RPM · Plataforma de catálogo y cotizaciones
+# RPM · Rebajas por Minuto
 
-Aplicación compartida con catálogo por sucursal, precios y existencias independientes, escalas por cantidad, descuentos generales configurables, cotizaciones con desglose, PDF y solicitud por WhatsApp. Conserva el header, las ocho secciones del home, el ancho de 100%, la escala de 90% y el footer de ancho completo del diseño aprobado.
+Tienda y portal de cotizaciones en **Next.js**, preparada para Vercel. PostgreSQL guarda catálogo, sucursales, precios, personal y cotizaciones. Supabase gestiona acceso por correo con código y fotografías en un bucket privado. La interfaz utiliza únicamente la marca RPM.
 
-## Acceso y operación
+Consulta [VERCEL.md](./VERCEL.md) para publicar. `supabase/setup.sql` prepara tablas, ejemplos y almacenamiento; `.env.example` enumera las variables que debes configurar.
 
-La tienda permite consultar sin cuenta. En **Cuenta → Iniciar sesión**, los clientes identificados pueden consultar y repetir sus cotizaciones. En el footer, **Administración** abre el portal del personal. El administrador principal corresponde al propietario del proyecto; en **Personal** puede autorizar correos como personal o administradores. El proveedor de identidad controla su pantalla externa de acceso; la interfaz de RPM usa únicamente la marca RPM.
+## Desarrollo local
 
-El primer acceso prepara diez artículos de muestra en la base central. **No son precios, existencias ni condiciones reales.** Las escalas y reglas generales están desactivadas hasta configurarlas. El impuesto queda pendiente de confirmar. Cargar y revisar el Excel real, verificar los números de WhatsApp y configurar las condiciones comerciales antes de desactivar **Catálogo de muestra**.
+Requisitos: Node.js 22 y Docker para la base local, o una conexión PostgreSQL existente.
 
-Las cotizaciones no son órdenes, no descuentan ni reservan inventario y no procesan pagos. El botón de WhatsApp prepara un enlace con el mensaje; el cliente revisa y envía desde WhatsApp. Guardar una cotización no confirma que el mensaje haya sido enviado. Los PDF guardan los valores de la solicitud original; repetir una selección recalcula con precios actuales.
+```sh
+npm ci
+docker compose up -d --wait
+cp .env.example .env.local
+```
 
-## Excel y fotografías
+Para PostgreSQL local, configura `DATABASE_URL=postgresql://rpm:rpm-local-only@127.0.0.1:55471/rpm` y `APP_URL=http://127.0.0.1:8871`. Agrega las claves reales de Supabase para acceso por correo y almacenamiento. No hay cuentas de administración simuladas ni accesos que omitan la verificación del correo.
 
-En **Importar Excel**, cargar `.xlsx` o `.csv`, elegir hoja y sucursal, relacionar columnas y revisar antes de confirmar. Código, nombre y precio son obligatorios. Se actualizan códigos existentes y se conservan las otras sucursales. Hasta 500 artículos y 5 MB por archivo; dividir archivos mayores en lotes. `.xls` debe guardarse como `.xlsx` desde Excel. Se reconocen imágenes incrustadas ancladas a filas y enlaces HTTPS. Fórmulas necesitan un valor calculado guardado por Excel. Las fotos también pueden subirse al editar un artículo (JPG, PNG, WEBP, máximo 5 MB).
+```sh
+npm run db:migrate
+npm run dev -- --hostname 127.0.0.1 --port 8871
+```
 
-Los cambios concurrentes se detectan con versiones; si alguien modificó el catálogo durante una importación, hay que recargar y revisar el archivo nuevamente. Los lotes se guardan dentro de una transacción D1.
+Las cotizaciones públicas y los cálculos funcionan con la base local. El acceso y las fotos cargadas requieren configurar Supabase; las fotos de muestra se sirven desde `public/images/rpm`.
 
-## Desarrollo
+## Validación y entrega
 
-Node 22.13 o superior. Instalar dependencias con el helper de Sites. `node scripts/prepare-client.mjs` prepara los archivos del navegador. `npm run dev -- --port 5173` inicia la vista local. El acceso local usa exclusivamente el simulador del starter; no se incluye en producción.
+```sh
+npm run typecheck
+npm test
+# Usa exclusivamente una base PostgreSQL de prueba: el test crea y elimina su propia base.
+TEST_DATABASE_URL=postgresql://rpm:rpm-local-only@127.0.0.1:55471/postgres npm run test:integration
+npm run build
+npm run check:deploy
+npm run export:vercel
+```
 
-`node --test tests/pricing.test.mjs` prueba límites de escalas, descuentos, impuestos, existencias, redondeo y entradas inválidas. `npx tsc --noEmit` verifica tipos. `tests/api-smoke.mjs` es una comprobación del servidor local de prueba y requiere el escenario de mayoreo descrito dentro del archivo. El fixture `tests/import-sample.xlsx` contiene un artículo y una imagen de prueba, sin datos reales.
+`outputs/rpm-vercel.zip` contiene el código y los archivos de configuración. Excluye credenciales, base local, historial Git, dependencias instaladas y compilaciones.
 
-La fuente visual original se conserva en `public/prototype.js`; `lib/business-client.js` integra las funciones reales y `scripts/prepare-client.mjs` genera `public/storefront.js`. API en `app/api/[...path]/route.ts`, cálculo en `lib/pricing.mjs`, tablas en `db/schema.ts` y migraciones en `drizzle/`. D1 almacena catálogo, configuración, permisos y cotizaciones; R2 almacena imágenes. No se guardan credenciales en el navegador ni en el repositorio. Los borradores de selección y favoritos locales usan almacenamiento del dispositivo; los registros de negocio son centrales.
+## Funciones
 
-El manifiesto `.openai/hosting.json` conserva la identidad del Site y los enlaces DB/BUCKET. Publicar con los helpers de Sites; no desplegar por fuera de ese flujo. Las migraciones locales y alojadas usan bases separadas.
+Catálogo por sucursal, cantidades, escalas, descuentos generales sin acumulación, impuestos configurables, cotizaciones anónimas con token, historial de cuentas verificadas, PDF, borrador para WhatsApp, administración por permisos, importación XLSX/CSV y fotografías. Cambios de catálogo e importaciones usan transacciones y control de versiones para evitar sobrescrituras simultáneas.
+
+Los ejemplos iniciales siguen marcados como muestra. Carga y revisa los datos reales antes de desactivar ese modo. Las existencias desconocidas se muestran por confirmar; guardar una cotización no reserva inventario ni envía mensajes.
+
+Los datos de la aplicación viven en el esquema privado `rpm`. La interfaz accede a ellos por rutas de servidor que verifican la identidad y los permisos. La clave secreta de almacenamiento y la conexión de base de datos nunca se envían al navegador.
