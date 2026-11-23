@@ -628,3 +628,17 @@
   }
 }
 
+
+/* Full-width sections: no outer gutters; spacing belongs inside controls. */
+#rpm-reference-home .r5-container,
+#rpm-reference-home .r5-footer > .r5-container{width:100%;max-width:none;margin-inline:0}
+#rpm-reference-home .r5-header,
+#rpm-reference-home .r5-utility-inner,
+#rpm-reference-home .r5-footer-main,
+#rpm-reference-home .r5-footer-bottom{padding-inline:24px}
+@media(max-width:600px){
+  #rpm-reference-home .r5-header,
+  #rpm-reference-home .r5-utility-inner,
+  #rpm-reference-home .r5-footer-main,
+  #rpm-reference-home .r5-footer-bottom{padding-inline:16px}
+}
