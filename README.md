@@ -1,6 +1,6 @@
 # RPM · Plataforma de catálogo y cotizaciones
 
-Aplicación compartida con catálogo por sucursal, precios y existencias independientes, escalas por cantidad, descuentos generales configurables, cotizaciones con desglose, PDF y solicitud por WhatsApp. Conserva el header, las ocho secciones del home, el ancho de 90%, la escala de 80% y el footer de ancho completo del diseño aprobado.
+Aplicación compartida con catálogo por sucursal, precios y existencias independientes, escalas por cantidad, descuentos generales configurables, cotizaciones con desglose, PDF y solicitud por WhatsApp. Conserva el header, las ocho secciones del home, el ancho de 100%, la escala de 90% y el footer de ancho completo del diseño aprobado.
 
 ## Acceso y operación
 
